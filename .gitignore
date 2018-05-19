@@ -1,0 +1,17 @@
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
+
+staging/staging_key
+staging/staging_key.pub
+
+# staging/.terraform/*
+# staging/terraform.tfstate
+# staging/terraform.tfstate.*
+# staging/.tfvars
