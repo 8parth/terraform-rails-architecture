@@ -33,5 +33,10 @@ variable "private_subnet_cidr" {
 }
 
 variable "app_name" {
-  default = "reelo_backend"
+  default = "backend_api_app"
+}
+
+variable "web_instance_count" {
+  description = "The total of web instances to run"
+  default     = 1
 }
