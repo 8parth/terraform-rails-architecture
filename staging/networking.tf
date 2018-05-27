@@ -9,4 +9,5 @@ module "networking" {
   secondary_availability_zone = "${var.secondary_availability_zone}"
   key_name                    = "${var.key_name}"
   app_name                    = "${var.app_name}"
+  public_subnet_cidr_2        = "${var.public_subnet_cidr_2}"
 }

@@ -28,6 +28,10 @@ variable "public_subnet_cidr" {
   description = "The CIDR block of the public subnet"
 }
 
+variable "public_subnet_cidr_2" {
+  description = "The CIDR block of the public subnet"
+}
+
 variable "private_subnet_cidr" {
   description = "The CIDR block of the private subnet"
 }

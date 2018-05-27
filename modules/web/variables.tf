@@ -18,6 +18,10 @@ variable "public_subnet_id" {
   description = "The id of the public subnet to launch the load balancer"
 }
 
+variable "public_subnet_id_2" {
+  description = "The id of the public subnet to launch the load balancer"
+}
+
 variable "vpc_sg_id" {
   description = "The default security group from the vpc"
 }

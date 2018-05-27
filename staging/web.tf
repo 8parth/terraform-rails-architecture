@@ -5,6 +5,7 @@ module "web" {
   instance_type      = "t2.micro"
   private_subnet_id  = "${module.networking.private_subnet_id}"
   public_subnet_id   = "${module.networking.public_subnet_id}"
+  public_subnet_id_2 = "${module.networking.public_subnet_id_2}"
   vpc_sg_id          = "${module.networking.default_sg_id}"
   key_name           = "${var.key_name}"
   environment        = "${var.environment}"
