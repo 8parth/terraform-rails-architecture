@@ -42,6 +42,19 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
+resource "aws_subnet" "public_subnet_2" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "${var.public_subnet_cidr_2}"
+  availability_zone       = "${var.secondary_availability_zone}"
+  map_public_ip_on_launch = true
+
+  tags {
+    Name        = "${var.environment}-public-subnet-2"
+    Environment = "${var.environment}"
+    App         = "${var.app_name}"
+  }
+}
+
 resource "aws_subnet" "private_subnet" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${var.private_subnet_cidr}"
@@ -76,14 +89,12 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route" "public_internet_gateway" {
-  depends_on             = ["aws_route_table.public", "aws_internet_gateway.igw"]
   route_table_id         = "${aws_route_table.public.id}"
   gateway_id             = "${aws_internet_gateway.igw.id}"
   destination_cidr_block = "0.0.0.0/0"
 }
 
 resource "aws_route" "private_internet_gateway" {
-  depends_on             = ["aws_route_table.private", "aws_nat_gateway.natgw"]
   route_table_id         = "${aws_route_table.private.id}"
   gateway_id             = "${aws_nat_gateway.natgw.id}"
   destination_cidr_block = "0.0.0.0/0"
@@ -91,6 +102,11 @@ resource "aws_route" "private_internet_gateway" {
 
 resource "aws_route_table_association" "public" {
   subnet_id      = "${aws_subnet.public_subnet.id}"
+  route_table_id = "${aws_route_table.public.id}"
+}
+
+resource "aws_route_table_association" "public-2" {
+  subnet_id      = "${aws_subnet.public_subnet_2.id}"
   route_table_id = "${aws_route_table.public.id}"
 }
 
