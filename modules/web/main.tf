@@ -86,22 +86,53 @@ resource "aws_instance" "web" {
   }
 }
 
-resource "aws_elb" "web" {
-  name            = "${var.environment}-web-lb"
-  subnets         = ["${var.public_subnet_id}"]
+resource "aws_alb" "web" {
+  name            = "${var.environment}-web-alb"
+  subnets         = ["${var.public_subnet_id}", "${var.public_subnet_id_2}"]
   security_groups = ["${aws_security_group.web_inbound_sg.id}"]
-
-  listener {
-    instance_port     = 80
-    instance_protocol = "http"
-    lb_port           = 80
-    lb_protocol       = "http"
-  }
-
-  instances = ["${aws_instance.web.*.id}"]
+  internal        = false
 
   tags {
     Environment = "${var.environment}"
     App         = "${var.app_name}"
   }
+}
+
+resource "aws_alb_target_group" "web-alb-tg" {
+  name     = "${var.environment}-web-alb-tg"
+  vpc_id   = "${var.vpc_id}"
+  port     = "80"
+  protocol = "HTTP"
+
+  health_check {
+    path                = "/"
+    port                = "80"
+    protocol            = "HTTP"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    interval            = 5
+    timeout             = 4
+  }
+
+  tags {
+    Environment = "${var.environment}"
+    App         = "${var.app_name}"
+  }
+}
+
+resource "aws_alb_listener" "web-listener" {
+  load_balancer_arn = "${aws_alb.web.arn}"
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = "${aws_alb_target_group.web-alb-tg.arn}"
+    type             = "forward"
+  }
+}
+
+resource "aws_alb_target_group_attachment" "web-alb-attachments" {
+  target_group_arn = "${aws_alb_target_group.web-alb-tg.arn}"
+  target_id        = "${element(aws_instance.web.*.id, count.index)}"
+  port             = 80
 }
