@@ -44,3 +44,34 @@ variable "web_instance_count" {
   description = "The total of web instances to run"
   default     = 1
 }
+
+# rds module variables
+variable "db_identifier" {
+  description = "Database Name (Identifier)"
+}
+
+variable "db_instance_class" {
+  description = "Database Instance Class"
+}
+
+variable "db_username" {
+  description = "Database Username"
+}
+
+variable "db_password" {
+  description = "Database Password"
+}
+
+variable "allocated_storage" {
+  description = "The allocated storage in gigabytes"
+}
+
+variable "backup_window" {
+  description = "The daily time range (in UTC) during which automated backups are created"
+  default     = "03:00-06:00"
+}
+
+variable "maintenance_window" {
+  description = "Maintenance Window"
+  default     = "Mon:00:00-Mon:03:00"
+}
