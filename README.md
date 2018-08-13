@@ -1,4 +1,4 @@
-# Two Tier AWS Architecture with Terraform
+# Web Application AWS Architecture with Terraform
 
 ### What it does:
 
